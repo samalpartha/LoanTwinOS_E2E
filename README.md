@@ -12,8 +12,8 @@ docker compose up --build
 ```
 
 Open:
-- Frontend: http://localhost:3000
-- API: http://localhost:8000/api/health
+- Frontend: http://localhost:3005
+- API: http://localhost:8005/api/health
 
 ## Demo Steps
 1. Workspace → Create Loan

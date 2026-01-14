@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { 
+import {
   Cpu, Database, Cloud, Shield, Zap, Globe, Code, Server,
   FileText, Bot, Brain, Lock, GitBranch, Layers, Terminal,
   CheckCircle, ExternalLink, Github, BookOpen, Award, Users,
@@ -80,8 +80,8 @@ export default function AboutPage() {
   return (
     <div className="flex-col gap-lg animate-stagger">
       {/* Hero */}
-      <section className="card-premium" style={{ 
-        textAlign: 'center', 
+      <section className="card-premium" style={{
+        textAlign: 'center',
         padding: 'var(--space-2xl)',
         background: 'linear-gradient(135deg, var(--bg-card) 0%, rgba(51, 187, 207, 0.08) 100%)'
       }}>
@@ -90,7 +90,7 @@ export default function AboutPage() {
         </div>
         <h1 className="h1 gradient-text-cyan" style={{ fontSize: 32 }}>LoanTwin OS</h1>
         <p className="body opacity-70 mt-sm" style={{ maxWidth: 600, margin: '12px auto 0' }}>
-          The Self-Driving Loan Asset Platform — AI-powered document intelligence, 
+          The Self-Driving Loan Asset Platform — AI-powered document intelligence,
           credit risk analytics, and compliance automation for institutional finance.
         </p>
         <div className="flex gap-sm justify-center mt-lg flex-wrap">
@@ -102,20 +102,20 @@ export default function AboutPage() {
 
       {/* Tab Navigation */}
       <div className="flex justify-center">
-        <div 
+        <div
           className="flex items-center gap-xs"
-          style={{ 
-            background: 'var(--bg-card)', 
-            padding: '6px', 
+          style={{
+            background: 'var(--bg-card)',
+            padding: '6px',
             borderRadius: '12px',
             border: '1px solid var(--border-subtle)'
           }}
         >
           {(['overview', 'tech', 'features', 'roadmap'] as const).map(tab => (
-            <button 
+            <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              style={{ 
+              style={{
                 padding: '10px 20px',
                 borderRadius: '8px',
                 border: 'none',
@@ -123,7 +123,7 @@ export default function AboutPage() {
                 fontWeight: 600,
                 fontSize: 14,
                 transition: 'all 0.2s',
-                background: activeTab === tab ? 'var(--accent-primary)' : 'transparent',
+                background: activeTab === tab ? 'var(--accent-secondary)' : 'transparent',
                 color: activeTab === tab ? '#0A1628' : 'var(--text-secondary)'
               }}
             >
@@ -141,8 +141,8 @@ export default function AboutPage() {
             <div className="grid grid-cols-2 gap-lg">
               <div>
                 <p className="body opacity-80 mb-md">
-                  LoanTwin OS transforms loan document management from manual spreadsheet work 
-                  into an AI-powered, automated platform. Upload a credit agreement PDF and get 
+                  LoanTwin OS transforms loan document management from manual spreadsheet work
+                  into an AI-powered, automated platform. Upload a credit agreement PDF and get
                   instant structured data extraction, compliance checking, and risk analytics.
                 </p>
                 <ul className="flex-col gap-sm">
@@ -219,7 +219,7 @@ export default function AboutPage() {
         <>
           <section className="card">
             <h2 className="h2 mb-lg"><Code size={24} /> Technology Stack</h2>
-            
+
             <div className="grid grid-cols-2 gap-lg">
               {/* Frontend */}
               <div>
@@ -325,10 +325,10 @@ export default function AboutPage() {
           <h2 className="h2 mb-lg"><Sparkles size={24} /> Core Features</h2>
           <div className="grid grid-cols-2 gap-lg">
             {features.map((feature, i) => (
-              <div 
-                key={i} 
-                className="card-inner" 
-                style={{ 
+              <div
+                key={i}
+                className="card-inner"
+                style={{
                   padding: 'var(--space-lg)',
                   borderLeft: `4px solid var(--accent-${['primary', 'secondary', 'success', 'warning', 'info', 'danger'][i % 6]})`
                 }}
@@ -353,9 +353,9 @@ export default function AboutPage() {
           <div className="grid grid-cols-4 gap-lg">
             {roadmap.map((r, i) => (
               <div key={i} className="card-inner" style={{ padding: 'var(--space-lg)' }}>
-                <div 
-                  className="tag mb-md" 
-                  style={{ 
+                <div
+                  className="tag mb-md"
+                  style={{
                     background: i === 0 ? 'var(--accent-success-dim)' : 'var(--bg-elevated)',
                     color: i === 0 ? 'var(--accent-success)' : 'inherit'
                   }}

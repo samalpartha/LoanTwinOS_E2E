@@ -12,8 +12,8 @@ interface FloatingActionButtonProps {
   onVideoGenerated?: (result: any) => void;
 }
 
-export default function FloatingActionButton({ 
-  onQuickTrade, 
+export default function FloatingActionButton({
+  onQuickTrade,
   onAiScan,
   onVideoGenerated
 }: FloatingActionButtonProps) {
@@ -70,10 +70,10 @@ export default function FloatingActionButton({
       const result = await runAgentWorkflow(activeLoanId);
       showToast(`AI Scan complete: ${result.recommendations_generated} recommendations generated`, 'success');
       onAiScan?.();
-      
+
       // Navigate to DLR page and scroll to recommendations
       router.push('/dlr#ai-recommendations');
-      
+
       // Wait for navigation then scroll
       setTimeout(() => {
         const recSection = document.getElementById('ai-recommendations');
@@ -121,7 +121,7 @@ export default function FloatingActionButton({
     }
     setIsLoading('export');
     setIsOpen(false);
-    
+
     // Trigger actual document export
     try {
       // Export DLR as JSON
@@ -149,33 +149,33 @@ export default function FloatingActionButton({
   };
 
   const actions = [
-    { 
-      id: 'trade', 
-      icon: Zap, 
-      label: 'Quick Trade', 
+    {
+      id: 'trade',
+      icon: Zap,
+      label: 'Quick Trade',
       color: 'var(--accent-success)',
-      onClick: handleQuickTrade 
+      onClick: handleQuickTrade
     },
-    { 
-      id: 'scan', 
-      icon: ScanSearch, 
-      label: 'AI Scan', 
+    {
+      id: 'scan',
+      icon: ScanSearch,
+      label: 'AI Scan',
       color: 'var(--neon-purple)',
-      onClick: handleAiScan 
+      onClick: handleAiScan
     },
-    { 
-      id: 'video', 
-      icon: Video, 
-      label: 'Video Brief', 
+    {
+      id: 'video',
+      icon: Video,
+      label: 'Video Brief',
       color: 'var(--accent-warning)',
-      onClick: handleGenerateVideo 
+      onClick: handleGenerateVideo
     },
-    { 
-      id: 'export', 
-      icon: FileText, 
-      label: 'Export Docs', 
+    {
+      id: 'export',
+      icon: FileText,
+      label: 'Export Docs',
       color: 'var(--accent-secondary)',
-      onClick: handleExportDocs 
+      onClick: handleExportDocs
     }
   ];
 
@@ -208,7 +208,7 @@ export default function FloatingActionButton({
           );
         })}
       </div>
-      
+
       {/* Main FAB Button */}
       <button
         className={`fab-main ${isOpen ? 'open' : ''}`}
@@ -217,7 +217,7 @@ export default function FloatingActionButton({
       >
         {isOpen ? <X size={28} /> : <Plus size={28} />}
       </button>
-      
+
       {/* Active Deal Indicator */}
       {activeLoanId && !isOpen && (
         <div style={{
@@ -243,27 +243,14 @@ export default function FloatingActionButton({
           {loanName ? loanName.substring(0, 20) : `Deal #${activeLoanId}`} active
         </div>
       )}
-      
-      {/* Backdrop */}
-      {isOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0, 4, 15, 0.6)',
-            backdropFilter: 'blur(4px)',
-            zIndex: -1
-          }}
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      {/* Backdrop removed - buttons now float transparently */}
 
     </div>
   );
 
   // Video Modal rendered via portal to ensure it's on top
   const videoModal = showVideoModal && videoResult && mounted ? createPortal(
-    <div 
+    <div
       className="modal-overlay"
       style={{
         position: 'fixed',
@@ -278,7 +265,7 @@ export default function FloatingActionButton({
       }}
       onClick={() => setShowVideoModal(false)}
     >
-      <div 
+      <div
         className="card"
         style={{
           maxWidth: 700,
@@ -293,7 +280,7 @@ export default function FloatingActionButton({
       >
         <div className="flex justify-between items-center mb-lg" style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div style={{ 
+            <div style={{
               width: 48, height: 48, borderRadius: 12,
               background: 'rgba(243, 156, 18, 0.2)',
               display: 'flex', alignItems: 'center', justifyContent: 'center'
@@ -307,13 +294,13 @@ export default function FloatingActionButton({
               </p>
             </div>
           </div>
-          <button 
+          <button
             onClick={() => setShowVideoModal(false)}
-            style={{ 
-              background: 'transparent', 
-              border: '1px solid rgba(255,255,255,0.2)', 
-              borderRadius: 8, 
-              padding: 8, 
+            style={{
+              background: 'transparent',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: 8,
+              padding: 8,
               cursor: 'pointer',
               color: 'white'
             }}
@@ -346,11 +333,11 @@ export default function FloatingActionButton({
                 position: 'relative'
               }}>
                 <Loader2 size={40} color="#f39c12" style={{ animation: 'spin 1s linear infinite' }} />
-                <span style={{ 
-                  position: 'absolute', 
-                  fontSize: 14, 
-                  fontWeight: 700, 
-                  color: '#f39c12' 
+                <span style={{
+                  position: 'absolute',
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#f39c12'
                 }}>{renderProgress}%</span>
               </div>
               <p style={{ fontWeight: 600, marginBottom: 4, color: 'white' }}>Rendering Video...</p>
@@ -473,7 +460,7 @@ export default function FloatingActionButton({
                     textAlign: 'center'
                   }}
                 >
-                  <User size={24} style={{ 
+                  <User size={24} style={{
                     margin: '0 auto 8px',
                     color: selectedAvatar === avatar.id ? '#f39c12' : 'rgba(255,255,255,0.5)'
                   }} />
@@ -508,11 +495,11 @@ export default function FloatingActionButton({
         {/* Actions */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ 
-              background: renderStatus === 'completed' ? 'rgba(0,212,170,0.2)' : 'rgba(243,156,18,0.2)', 
-              color: renderStatus === 'completed' ? '#00d4aa' : '#f39c12', 
-              padding: '4px 10px', 
-              borderRadius: 12, 
+            <span style={{
+              background: renderStatus === 'completed' ? 'rgba(0,212,170,0.2)' : 'rgba(243,156,18,0.2)',
+              color: renderStatus === 'completed' ? '#00d4aa' : '#f39c12',
+              padding: '4px 10px',
+              borderRadius: 12,
               fontSize: 12,
               display: 'flex',
               alignItems: 'center',
@@ -526,7 +513,7 @@ export default function FloatingActionButton({
             </span>
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button 
+            <button
               onClick={() => {
                 navigator.clipboard.writeText(videoResult.script || '');
                 showToast('Script copied to clipboard', 'success');
@@ -543,7 +530,7 @@ export default function FloatingActionButton({
             >
               Copy Script
             </button>
-            <button 
+            <button
               onClick={async () => {
                 if (isRendering) return;
                 if (renderStatus === 'completed') {
@@ -553,11 +540,11 @@ export default function FloatingActionButton({
                   setRenderId(null);
                   return;
                 }
-                
+
                 setIsRendering(true);
                 setRenderProgress(0);
                 setRenderStatus('starting');
-                
+
                 try {
                   // Start render
                   const result = await renderVideo(videoResult.job_id, {
@@ -565,18 +552,18 @@ export default function FloatingActionButton({
                     background: 'office',
                     resolution: '1080p'
                   });
-                  
+
                   setRenderId(result.render_id);
                   setRenderProgress(result.progress);
                   setRenderStatus('rendering');
-                  
+
                   // Poll for status
                   renderPollRef.current = setInterval(async () => {
                     try {
                       const status = await getRenderStatus(result.render_id);
                       setRenderProgress(status.progress);
                       setRenderStatus(status.status);
-                      
+
                       if (status.status === 'completed' || status.status === 'failed') {
                         clearInterval(renderPollRef.current!);
                         setIsRendering(false);
@@ -590,7 +577,7 @@ export default function FloatingActionButton({
                       console.error('Poll error:', e);
                     }
                   }, 1500);
-                  
+
                 } catch (e: any) {
                   setIsRendering(false);
                   setRenderStatus('failed');

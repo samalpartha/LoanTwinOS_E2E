@@ -19,16 +19,17 @@
   --bg-card-hover: #F1F5F9;
   --bg-elevated: #F1F5F9;
 
-  /* Text hierarchy */
+  /* Text hierarchy (Enhanced for Light Mode) */
   --text-primary: #0F172A;
   --text-secondary: #475569;
-  --text-muted: #94A3B8;
+  --text-muted: #64748B;
 
-  /* Institutional Accents - Hoobank Inspired */
+  /* Institutional Accents - Hoobank Inspired (Enhanced for Light Mode) */
   --accent-primary: #00040F;
   --accent-primary-dim: rgba(0, 4, 15, 0.08);
-  --accent-secondary: #33BBCF;
-  --accent-secondary-dim: rgba(51, 187, 207, 0.12);
+  --accent-secondary: #0891B2;
+  --accent-secondary-light: #33BBCF;
+  --accent-secondary-dim: rgba(8, 145, 178, 0.12);
 
   /* Semantic colors */
   --accent-success: #10B981;
@@ -38,10 +39,10 @@
   --accent-danger: #EF4444;
   --accent-danger-dim: rgba(239, 68, 68, 0.12);
 
-  /* Borders & effects */
-  --border-subtle: rgba(0, 0, 0, 0.06);
-  --border-default: rgba(0, 0, 0, 0.1);
-  --border-accent: rgba(51, 187, 207, 0.3);
+  /* Borders & effects (Enhanced for Light Mode) */
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-default: rgba(0, 0, 0, 0.15);
+  --border-accent: rgba(8, 145, 178, 0.4);
 
   /* Gradients - Hoobank Signature */
   --gradient-primary: linear-gradient(144.39deg, #ffffff -278.56%, #6d6d6d -78.47%, #11101d 91.61%);
@@ -56,12 +57,12 @@
   --glow-danger: 0 0 20px rgba(239, 68, 68, 0.3);
   --glow-accent: 0 0 20px rgba(51, 187, 207, 0.3);
 
-  /* Material-Inspired Elevation System */
-  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --elevation-2: 0 4px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
-  --elevation-3: 0 8px 16px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
-  --elevation-4: 0 16px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
-  --elevation-5: 0 24px 48px rgba(0, 0, 0, 0.16), 0 8px 16px rgba(0, 0, 0, 0.1);
+  /* Material-Inspired Elevation System (Enhanced for Light Mode) */
+  --elevation-1: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --elevation-2: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --elevation-3: 0 8px 20px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.08);
+  --elevation-4: 0 16px 32px rgba(0, 0, 0, 0.14), 0 6px 12px rgba(0, 0, 0, 0.1);
+  --elevation-5: 0 24px 48px rgba(0, 0, 0, 0.18), 0 12px 24px rgba(0, 0, 0, 0.12);
 
   /* 8px Grid System */
   --space-xs: 4px;
@@ -605,6 +606,36 @@ a {
   font-weight: 700;
   background: var(--accent-danger);
   color: white;
+}
+
+/* Feature Badges - Enhanced for Light Mode */
+.feature-badge,
+.tech-badge,
+.status-badge {
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--accent-secondary);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--transition-base);
+}
+
+.feature-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(8, 145, 178, 0.2);
+}
+
+/* Dark mode: use lighter background with colored text */
+.theme-dark .feature-badge,
+.theme-dark .tech-badge,
+.theme-dark .status-badge {
+  background: var(--accent-secondary-dim);
+  color: var(--accent-secondary-light);
+  border: 1px solid var(--accent-secondary);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1478,6 +1509,7 @@ a {
 .fab-menu {
   display: flex;
   gap: var(--space-sm);
+  background: transparent;
   opacity: 0;
   transform: translateY(20px);
   pointer-events: none;
@@ -1493,8 +1525,7 @@ a {
 .fab-action {
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-full);
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
+  background: transparent;
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
   font-size: 13px;
@@ -2546,4 +2577,76 @@ a {
     linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px) !important;
   background-size: 40px 40px !important;
   opacity: 0.3 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Tab Navigation - Enhanced for Light Mode
+   ═══════════════════════════════════════════════════════════════════════════ */
+.tab-container {
+  display: flex;
+  gap: var(--space-sm);
+  border-bottom: 2px solid var(--border-subtle);
+  margin-bottom: var(--space-lg);
+}
+
+.tab-button {
+  padding: var(--space-sm) var(--space-lg);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  position: relative;
+}
+
+.tab-button:hover {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.tab-button.active {
+  color: var(--accent-secondary);
+  font-weight: 600;
+  border-bottom-color: var(--accent-secondary);
+  background: var(--accent-secondary-dim);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+/* Dark mode adjustments */
+.theme-dark .tab-button.active {
+  color: var(--accent-secondary-light);
+  border-bottom-color: var(--accent-secondary-light);
+}
+
+/* Upload Area - Enhanced Visibility */
+.upload-area {
+  border: 2px dashed var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  text-align: center;
+  background: var(--bg-elevated);
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.upload-area:hover {
+  border-color: var(--accent-secondary);
+  background: var(--accent-secondary-dim);
+  transform: translateY(-2px);
+  box-shadow: var(--elevation-2);
+}
+
+.theme-dark .upload-area {
+  border-color: var(--border-accent);
+  background: rgba(15, 20, 32, 0.5);
+}
+
+.theme-dark .upload-area:hover {
+  background: var(--accent-secondary-dim);
+  border-color: var(--accent-secondary-light);
 }

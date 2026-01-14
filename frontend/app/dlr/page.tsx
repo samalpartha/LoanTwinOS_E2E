@@ -288,7 +288,7 @@ function DLRPage() {
                 cursor: 'pointer',
                 border: 'none',
                 transition: 'all 0.2s ease',
-                background: viewMode === 'workspace' ? 'var(--accent-primary)' : 'transparent',
+                background: viewMode === 'workspace' ? 'var(--accent-secondary)' : 'transparent',
                 color: viewMode === 'workspace' ? '#0A1628' : 'var(--text-secondary)'
               }}
             >
@@ -307,7 +307,7 @@ function DLRPage() {
                 cursor: 'pointer',
                 border: 'none',
                 transition: 'all 0.2s ease',
-                background: viewMode === 'analytics' ? 'var(--accent-primary)' : 'transparent',
+                background: viewMode === 'analytics' ? 'var(--accent-secondary)' : 'transparent',
                 color: viewMode === 'analytics' ? '#0A1628' : 'var(--text-secondary)'
               }}
             >
@@ -684,7 +684,7 @@ function DLRPage() {
               className="px-md py-sm rounded-md flex items-center gap-xs transition-all"
               onClick={() => setViewMode('workspace')}
               style={{
-                background: viewMode === 'workspace' ? 'var(--accent-primary)' : 'transparent',
+                background: viewMode === 'workspace' ? 'var(--accent-secondary)' : 'transparent',
                 color: viewMode === 'workspace' ? '#0A1628' : 'inherit',
                 fontWeight: viewMode === 'workspace' ? 600 : 400
               }}
@@ -695,7 +695,7 @@ function DLRPage() {
               className="px-md py-sm rounded-md flex items-center gap-xs transition-all"
               onClick={() => setViewMode('analytics')}
               style={{
-                background: viewMode === 'analytics' ? 'var(--accent-primary)' : 'transparent',
+                background: viewMode === 'analytics' ? 'var(--accent-secondary)' : 'transparent',
                 color: viewMode === 'analytics' ? '#0A1628' : 'inherit',
                 fontWeight: viewMode === 'analytics' ? 600 : 400
               }}
@@ -706,7 +706,7 @@ function DLRPage() {
               className="px-md py-sm rounded-md flex items-center gap-xs transition-all"
               onClick={() => setViewMode('json')}
               style={{
-                background: viewMode === 'json' ? 'var(--accent-primary)' : 'transparent',
+                background: viewMode === 'json' ? 'var(--accent-secondary)' : 'transparent',
                 color: viewMode === 'json' ? '#0A1628' : 'inherit',
                 fontWeight: viewMode === 'json' ? 600 : 400
               }}
@@ -717,7 +717,7 @@ function DLRPage() {
               className="px-md py-sm rounded-md flex items-center gap-xs transition-all"
               onClick={() => setViewMode('events')}
               style={{
-                background: viewMode === 'events' ? 'var(--accent-primary)' : 'transparent',
+                background: viewMode === 'events' ? 'var(--accent-secondary)' : 'transparent',
                 color: viewMode === 'events' ? '#0A1628' : 'inherit',
                 fontWeight: viewMode === 'events' ? 600 : 400
               }}

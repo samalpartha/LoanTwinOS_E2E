@@ -285,6 +285,88 @@ The Legal Extractor uses advanced NLP patterns to:
 
 ---
 
+## 🧪 Testing Architecture
+
+LoanTwin OS includes a comprehensive testing suite with 100% backend test coverage and E2E testing with Playwright.
+
+```mermaid
+graph TB
+    subgraph "Backend Testing - Python/pytest"
+        UNIT[Unit Tests\n6 tests]
+        API[API Tests\n7 tests]
+        INTEG[Integration Tests\n10 tests]
+        SMOKE_BE[Smoke Tests\n5 tests]
+    end
+    
+    subgraph "Frontend Testing - Jest + Playwright"
+        JEST_UNIT[Jest Unit Tests\nAPI Client]
+        JEST_INTEG[Jest Integration\nDLR, Obligations]
+        JEST_SMOKE[Jest Smoke Tests\nPage Loads]
+        PLAYWRIGHT[Playwright E2E\n8 smoke tests]
+    end
+    
+    subgraph "Test Infrastructure"
+        FIXTURES[Test Fixtures\nMock Data]
+        COVERAGE[Coverage Reports\n32% backend]
+        CI[CI/CD Ready\nAutomated Testing]
+    end
+    
+    UNIT --> FIXTURES
+    API --> FIXTURES
+    INTEG --> FIXTURES
+    SMOKE_BE --> FIXTURES
+    
+    JEST_UNIT --> FIXTURES
+    JEST_INTEG --> FIXTURES
+    JEST_SMOKE --> FIXTURES
+    PLAYWRIGHT --> CI
+    
+    UNIT --> COVERAGE
+    API --> COVERAGE
+    INTEG --> COVERAGE
+    SMOKE_BE --> COVERAGE
+    
+    style UNIT fill:#50C878
+    style API fill:#50C878
+    style INTEG fill:#50C878
+    style SMOKE_BE fill:#50C878
+    style PLAYWRIGHT fill:#4A90E2
+    style COVERAGE fill:#FFD93D
+```
+
+### Test Coverage
+
+**Backend (28/28 tests passing - 100%)**
+- Unit Tests: Loans router, health checks
+- API Tests: Endpoint validation, error handling
+- Integration Tests: DLR workflow, Expert Network
+- Smoke Tests: Critical paths, CORS, health
+
+**Frontend (23/23 Jest tests + 8 Playwright E2E)**
+- Unit Tests: API client functionality
+- Integration Tests: DLR workflow, Obligations
+- Smoke Tests: Page loads, navigation
+- E2E Tests: Full user journeys with Playwright
+
+**Running Tests:**
+```bash
+# Backend
+cd backend && pytest -v
+
+# Frontend Unit/Integration
+cd frontend && npm test
+
+# Frontend E2E
+cd frontend && npm run test:e2e
+
+# All tests
+./scripts/run-all-tests.sh
+```
+
+See [TESTING.md](TESTING.md) for detailed testing documentation.
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites

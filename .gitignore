@@ -41,3 +41,51 @@ backend/data/*.db
 
 # Docker
 .dockerignore
+
+# Media Files (Large Binary Files)
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.mkv
+*.webm
+*.gif
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.tiff
+*.ico
+
+# Documents
+*.pdf
+*.doc
+*.docx
+
+# Data Files
+*.csv
+*.xlsx
+*.xls
+*.json.gz
+*.parquet
+*.feather
+
+# Test Artifacts
+playwright-report/
+test-results/
+*.webp
+htmlcov/
+.coverage
+
+# Temporary Files
+*.tmp
+*.temp
+*.bak
+test_write.txt
+
+# MCP Agent
+mcp-lma-agent/
+
+# Scripts (if needed, can be removed)
+# scripts/

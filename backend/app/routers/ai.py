@@ -8,6 +8,7 @@ from sqlmodel import Session, select
 from ..db import engine
 from ..models.tables import Document, LoanApplication
 import json
+import os
 import asyncio
 
 router = APIRouter(tags=["ai"])
@@ -63,29 +64,40 @@ class StreamChatRequest(BaseModel):
 
 @router.post("/loans/{loan_id}/chat")
 def chat_with_loan(loan_id: int, request: ChatRequest):
-    with Session(engine) as session:
-        # Get the first document text for context
-        doc = session.exec(select(Document).where(Document.loan_id == loan_id)).first()
-        if not doc:
-            raise HTTPException(404, "No documents found for this loan.")
-        
-        extractor = LegalExtractor(doc.stored_path)
-        extractor.load_document()
-        
-        context = extractor.full_text[:8000] # Limit context for speed
-        
-        prompt = f"""
-        Context from Loan Agreement:
-        {context}
+    try:
+        with Session(engine) as session:
+            # Get the first document text for context
+            doc = session.exec(select(Document).where(Document.loan_id == loan_id)).first()
+            if not doc:
+                raise HTTPException(404, "No documents found for this loan.")
+            
+            if not os.path.exists(doc.stored_path):
+                raise HTTPException(404, f"Document file not found at {doc.stored_path}")
 
-        Question: {request.message}
-        
-        Provide a concise answer based ONLY on the context provided. If the answer is not in the text, say you don't know.
-        """
-        
-        answer = extractor.extract_with_groq(prompt, "You are a helpful legal AI assistant. Cite specific clauses if possible.")
-        
-        return {"answer": answer, "citations": []}
+            extractor = LegalExtractor(doc.stored_path)
+            extractor.load_document()
+            
+            context = extractor.full_text[:8000] # Limit context for speed
+            
+            prompt = f"""
+            Context from Loan Agreement:
+            {context}
+
+            Question: {request.message}
+            
+            Provide a concise answer based ONLY on the context provided. If the answer is not in the text, say you don't know.
+            """
+            
+            answer = extractor.extract_with_groq(prompt, "You are a helpful legal AI assistant. Cite specific clauses if possible.")
+            
+            return {"answer": answer, "citations": []}
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
+        print(f"Error in chat_with_loan: {str(e)}")
+        traceback.print_exc()
+        raise HTTPException(500, f"An unexpected error occurred: {str(e)}")
 
 
 # ============== NEW GROQ-POWERED ENDPOINTS ==============

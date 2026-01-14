@@ -299,31 +299,67 @@ class LegalExtractor:
             self.client = Groq(api_key=api_key)
 
     def load_document(self):
-        doc = fitz.open(self.path)
-        ocr_engine = OCREngine(self.client)
-        table_extractor = TableExtractor(doc)
-        
-        for i, page in enumerate(doc, start=1):
-            # Check if OCR is needed
-            if ocr_engine.is_scanned_page(page):
-                self.ocr_pages.append(i)
-                t = ocr_engine.process_page_image(page, i)
-            else:
-                t = page.get_text("text")
+        try:
+            # Handle path resolution for Cloud Run vs Local
+            import os
             
-            # If text is still empty, mark for OCR
-            if not t.strip() and len(t) < 10:
-                t = f"[OCR REQUIRED: Page {i} appears to be an image]"
-                self.ocr_pages.append(i)
+            target_path = self.path
             
-            self.pages.append({"page": i, "text": t, "needs_ocr": i in self.ocr_pages})
-            self.full_text += t + "\n"
-        
-        # Extract tables
-        self.tables = table_extractor.extract_tables()
-        
-        doc.close()
-        return self
+            # If path doesn't match current environment, try to find it in common locations
+            if not os.path.exists(target_path):
+                filename = os.path.basename(target_path)
+                
+                # Check /app/data/uploads (Cloud Run standard)
+                cloud_path = os.path.join("/app/data/uploads", filename)
+                local_relative = os.path.join("data", "uploads", filename)
+                
+                if os.path.exists(cloud_path):
+                    print(f"Redirecting path {target_path} -> {cloud_path}")
+                    target_path = cloud_path
+                elif os.path.exists(local_relative):
+                    print(f"Redirecting path {target_path} -> {local_relative}")
+                    target_path = local_relative
+                else:
+                    # Final fallback: verify if the file is in the current directory or data root
+                    potential_paths = [
+                        os.path.join("data", filename),
+                        os.path.join("/app/data", filename),
+                        filename
+                    ]
+                    for p in potential_paths:
+                        if os.path.exists(p):
+                            target_path = p
+                            break
+
+            doc = fitz.open(target_path)
+            ocr_engine = OCREngine(self.client)
+            table_extractor = TableExtractor(doc)
+            
+            for i, page in enumerate(doc, start=1):
+                # Check if OCR is needed
+                if ocr_engine.is_scanned_page(page):
+                    self.ocr_pages.append(i)
+                    t = ocr_engine.process_page_image(page, i)
+                else:
+                    t = page.get_text("text")
+                
+                # If text is still empty, mark for OCR
+                if not t.strip() and len(t) < 10:
+                    t = f"[OCR REQUIRED: Page {i} appears to be an image]"
+                    self.ocr_pages.append(i)
+                
+                self.pages.append({"page": i, "text": t, "needs_ocr": i in self.ocr_pages})
+                self.full_text += t + "\n"
+            
+            # Extract tables
+            self.tables = table_extractor.extract_tables()
+            
+            doc.close()
+            return self
+        except Exception as e:
+            print(f"Error loading document {self.path}: {str(e)}")
+            self.full_text = f"Error loading document: {str(e)}"
+            return self
 
     def extract_with_groq(self, prompt: str, system_message: str = "You are a senior legal technologist specializing in LMA loan documentation.") -> str:
         """Fast inference extraction using Groq's LPU."""

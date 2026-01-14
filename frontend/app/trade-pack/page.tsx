@@ -20,6 +20,7 @@ interface TransferInfo {
   consent_label: string;
   standard_basis: string;
   transferability_mode: string | null;
+  minimum_transfer_amount?: number;
 }
 
 interface PreClearedBuyer {
@@ -58,12 +59,12 @@ function TradePackContent() {
 
   const [persona, setPersona] = useState<'Trader' | 'Legal' | 'Ops'>('Trader');
   const [view, setView] = useState<'checklist' | 'marketplace'>('checklist');
-  
+
   // Live data state
   const [transferInfo, setTransferInfo] = useState<TransferInfo | null>(null);
   const [marketplace, setMarketplace] = useState<MarketplaceData | null>(null);
   const [dlrData, setDlrData] = useState<any>(null);
-  
+
   // Trade execution state
   const [selectedBuyer, setSelectedBuyer] = useState<PreClearedBuyer | null>(null);
   const [tradeAmount, setTradeAmount] = useState<number>(0);
@@ -73,7 +74,7 @@ function TradePackContent() {
   const [executingTrade, setExecutingTrade] = useState(false);
   const [requestingWaiver, setRequestingWaiver] = useState<string | null>(null);
   const [activeTrade, setActiveTrade] = useState<any>(null);
-  
+
   // Compliance Shield state
   const [complianceShield, setComplianceShield] = useState<any>(null);
   const [xaiExplanation, setXaiExplanation] = useState<any>(null);
@@ -152,7 +153,7 @@ function TradePackContent() {
       const doc = new jsPDF();
       const pageWidth = doc.internal.pageSize.getWidth();
       let y = 20;
-      
+
       // Header
       doc.setFontSize(20);
       doc.setFont('helvetica', 'bold');
@@ -162,7 +163,7 @@ function TradePackContent() {
       doc.setFont('helvetica', 'normal');
       doc.text(`Generated: ${new Date().toLocaleString()}`, pageWidth / 2, y, { align: 'center' });
       y += 15;
-      
+
       // Deal Summary
       doc.setFontSize(14);
       doc.setFont('helvetica', 'bold');
@@ -174,7 +175,7 @@ function TradePackContent() {
       doc.text(`Borrower: ${borrowerName}`, 15, y); y += 6;
       doc.text(`Trade Readiness Score: ${readinessScore}% (${readinessLabel})`, 15, y); y += 6;
       doc.text(`LMA Match Score: ${lmaMatchScore}%`, 15, y); y += 12;
-      
+
       // Transfer Information
       doc.setFontSize(14);
       doc.setFont('helvetica', 'bold');
@@ -186,7 +187,7 @@ function TradePackContent() {
       doc.text(`Consent Required: ${transferInfo?.consent_required ? 'Yes - Borrower Required' : 'No'}`, 15, y); y += 6;
       doc.text(`Settlement: ${marketplace?.settlement_type || 'T+5'}`, 15, y); y += 6;
       doc.text(`Minimum Transfer: ${transferInfo?.minimum_transfer_amount ? `$${transferInfo.minimum_transfer_amount.toLocaleString()}` : 'N/A'}`, 15, y); y += 12;
-      
+
       // Marketplace Status
       doc.setFontSize(14);
       doc.setFont('helvetica', 'bold');
@@ -197,7 +198,7 @@ function TradePackContent() {
       doc.text(`Available for Sale: ${marketplace?.available_for_sale ? `$${marketplace.available_for_sale.toLocaleString()}` : 'N/A'}`, 15, y); y += 6;
       doc.text(`Pre-Cleared Buyers: ${marketplace?.pre_cleared_buyers?.length || 0}`, 15, y); y += 6;
       doc.text(`Instant Liquidity: ${marketplace?.instant_liquidity_available ? 'Available' : 'Not Available'}`, 15, y); y += 12;
-      
+
       // Checklist Items
       doc.setFontSize(14);
       doc.setFont('helvetica', 'bold');
@@ -205,7 +206,7 @@ function TradePackContent() {
       y += 8;
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
-      
+
       items.forEach((item, i) => {
         if (y > 270) { doc.addPage(); y = 20; }
         doc.setFont('helvetica', 'bold');
@@ -216,14 +217,14 @@ function TradePackContent() {
         doc.text(itemLines, 20, y);
         y += itemLines.length * 5 + 3;
       });
-      
+
       // Footer
       doc.setFontSize(9);
       doc.text('LoanTwin OS - Digital Loan Record Platform', pageWidth / 2, 285, { align: 'center' });
-      
+
       doc.save(`loantwin_trade_pack_${loanId}.pdf`);
-      window.dispatchEvent(new CustomEvent('loantwin-toast', { 
-        detail: { message: 'Trade Pack PDF downloaded', type: 'success' } 
+      window.dispatchEvent(new CustomEvent('loantwin-toast', {
+        detail: { message: 'Trade Pack PDF downloaded', type: 'success' }
       }));
     }
     setShowDownloadMenu(false);
@@ -234,16 +235,16 @@ function TradePackContent() {
     setExecutingTrade(true);
     try {
       const result = await initiateTrade(
-        loanId, 
-        selectedBuyer.id, 
+        loanId,
+        selectedBuyer.id,
         tradeAmount,
         tradePrice,
         tradeType,
         settlementDate
       );
       setActiveTrade(result);
-      window.dispatchEvent(new CustomEvent('loantwin-toast', { 
-        detail: { message: `✓ Trade ${result.trade_id} initiated! ${formatAmount(result.proceeds, marketplace?.currency || 'USD')} proceeds`, type: 'success' } 
+      window.dispatchEvent(new CustomEvent('loantwin-toast', {
+        detail: { message: `✓ Trade ${result.trade_id} initiated! ${formatAmount(result.proceeds, marketplace?.currency || 'USD')} proceeds`, type: 'success' }
       }));
       setSelectedBuyer(null);
     } catch (e: any) {
@@ -257,8 +258,8 @@ function TradePackContent() {
     setRequestingWaiver(buyer.id);
     try {
       const result = await requestWaiver(loanId, buyer.id, buyer.name);
-      window.dispatchEvent(new CustomEvent('loantwin-toast', { 
-        detail: { message: `✓ Waiver requested for ${buyer.name}. Expected response: ${result.expected_response_days} days`, type: 'success' } 
+      window.dispatchEvent(new CustomEvent('loantwin-toast', {
+        detail: { message: `✓ Waiver requested for ${buyer.name}. Expected response: ${result.expected_response_days} days`, type: 'success' }
       }));
     } catch (e: any) {
       window.dispatchEvent(new CustomEvent('loantwin-toast', { detail: { message: e.message, type: 'error' } }));
@@ -311,15 +312,15 @@ function TradePackContent() {
                     zIndex: 100,
                     minWidth: 150
                   }}>
-                    <button 
-                      className="btn-text w-full text-left p-sm" 
+                    <button
+                      className="btn-text w-full text-left p-sm"
                       style={{ display: 'block', borderBottom: '1px solid var(--border-subtle)' }}
                       onClick={() => handleDownloadPack('pdf')}
                     >
                       📄 PDF Document
                     </button>
-                    <button 
-                      className="btn-text w-full text-left p-sm" 
+                    <button
+                      className="btn-text w-full text-left p-sm"
                       style={{ display: 'block' }}
                       onClick={() => handleDownloadPack('json')}
                     >
@@ -369,7 +370,7 @@ function TradePackContent() {
             </div>
             <span className={`tag ${readinessScore > 80 ? 'success' : readinessScore > 50 ? 'warning' : 'danger'}`}>{readinessLabel}</span>
           </div>
-          
+
           {readinessScore >= 80 && marketplace && complianceShield?.trade_enabled && (
             <button className="btn success w-full mt-lg" style={{ height: 40 }} onClick={() => setView('marketplace')}>
               🏪 Enter Marketplace
@@ -385,14 +386,14 @@ function TradePackContent() {
 
       {/* Compliance Shield */}
       {complianceShield && (
-        <div className={`card`} style={{ 
+        <div className={`card`} style={{
           border: `2px solid ${complianceShield.shield_status === 'LOCKED' ? 'var(--accent-danger)' : complianceShield.shield_status === 'CAUTION' ? 'var(--accent-warning)' : 'var(--accent-success)'}`,
           background: complianceShield.shield_status === 'LOCKED' ? 'linear-gradient(135deg, var(--bg-card) 0%, rgba(231, 76, 60, 0.05) 100%)' : 'var(--bg-card)'
         }}>
           <div className="flex justify-between items-center mb-md flex-mobile-wrap gap-md">
             <div className="flex items-center gap-md">
-              <div style={{ 
-                width: 48, height: 48, borderRadius: '50%', 
+              <div style={{
+                width: 48, height: 48, borderRadius: '50%',
                 background: complianceShield.shield_status === 'LOCKED' ? 'var(--accent-danger)' : complianceShield.shield_status === 'CAUTION' ? 'var(--accent-warning)' : 'var(--accent-success)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24
               }}>
@@ -556,11 +557,11 @@ function TradePackContent() {
               </div>
               <div className="flex-col gap-md">
                 {marketplace.pre_cleared_buyers.map((buyer) => (
-                  <div 
-                    key={buyer.id} 
+                  <div
+                    key={buyer.id}
                     className={`card-inner hover-glow ${selectedBuyer?.id === buyer.id ? 'active' : ''}`}
-                    style={{ 
-                      borderLeft: '4px solid var(--accent-success)', 
+                    style={{
+                      borderLeft: '4px solid var(--accent-success)',
                       cursor: 'pointer',
                       background: selectedBuyer?.id === buyer.id ? 'var(--accent-success-dim)' : 'transparent'
                     }}
@@ -597,13 +598,13 @@ function TradePackContent() {
                     <div className="h3">Execute Trade with {selectedBuyer.name}</div>
                     <span className="tag success">⚡ T+0 Settlement</span>
                   </div>
-                  
+
                   <div className="grid gap-md mb-md" style={{ gridTemplateColumns: '1fr 1fr' }}>
                     <div>
                       <label className="small opacity-60 mb-xs block">Trade Amount ({marketplace.currency})</label>
-                      <input 
-                        type="number" 
-                        className="input" 
+                      <input
+                        type="number"
+                        className="input"
                         value={tradeAmount}
                         onChange={(e) => setTradeAmount(Number(e.target.value))}
                         min={marketplace.min_ticket_size}
@@ -613,9 +614,9 @@ function TradePackContent() {
                     </div>
                     <div>
                       <label className="small opacity-60 mb-xs block">Price (% of Par)</label>
-                      <input 
-                        type="number" 
-                        className="input" 
+                      <input
+                        type="number"
+                        className="input"
                         value={tradePrice}
                         onChange={(e) => setTradePrice(Number(e.target.value))}
                         step={0.01}
@@ -634,9 +635,9 @@ function TradePackContent() {
                     </div>
                     <div>
                       <label className="small opacity-60 mb-xs block">Settlement Date</label>
-                      <input 
-                        type="date" 
-                        className="input" 
+                      <input
+                        type="date"
+                        className="input"
                         value={settlementDate}
                         onChange={(e) => setSettlementDate(e.target.value)}
                       />
@@ -664,8 +665,8 @@ function TradePackContent() {
                   </div>
 
                   <div className="flex gap-sm">
-                    <button 
-                      className="btn success flex-1" 
+                    <button
+                      className="btn success flex-1"
                       style={{ height: 44 }}
                       onClick={handleInitiateTrade}
                       disabled={executingTrade || tradeAmount < marketplace.min_ticket_size}
@@ -719,13 +720,13 @@ function TradePackContent() {
                     <div className="small font-semibold mb-sm">📊 Workflow Progress</div>
                     <div className="flex-col gap-xs">
                       {activeTrade.workflow?.map((step: any, i: number) => (
-                        <div key={i} className="flex items-center gap-sm p-sm" style={{ 
-                          background: step.status === 'completed' ? 'var(--accent-success-dim)' : 'var(--bg-primary)', 
+                        <div key={i} className="flex items-center gap-sm p-sm" style={{
+                          background: step.status === 'completed' ? 'var(--accent-success-dim)' : 'var(--bg-primary)',
                           borderRadius: 'var(--radius-xs)',
                           borderLeft: `3px solid ${step.status === 'completed' ? 'var(--accent-success)' : step.status === 'in_progress' ? 'var(--accent-warning)' : 'var(--border-subtle)'}`
                         }}>
-                          <span style={{ 
-                            width: 20, height: 20, borderRadius: '50%', 
+                          <span style={{
+                            width: 20, height: 20, borderRadius: '50%',
                             background: step.status === 'completed' ? 'var(--accent-success)' : step.status === 'in_progress' ? 'var(--accent-warning)' : 'var(--bg-elevated)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             fontSize: 10, color: step.status === 'pending' ? 'var(--text-muted)' : 'white'
@@ -772,8 +773,8 @@ function TradePackContent() {
                     </div>
                     <div className="flex justify-between items-center mt-md">
                       <span className="small opacity-50">Status: {buyer.waiver_status}</span>
-                      <button 
-                        className="btn primary" 
+                      <button
+                        className="btn primary"
                         style={{ fontSize: 11, padding: '4px 12px' }}
                         onClick={() => handleRequestWaiver(buyer)}
                         disabled={requestingWaiver === buyer.id}
@@ -818,7 +819,7 @@ function TradePackContent() {
                   Generate Audit Log
                 </button>
               </div>
-              
+
               {(() => {
                 // Filter items by persona
                 const personaCategories: Record<string, string[]> = {
@@ -827,12 +828,12 @@ function TradePackContent() {
                   'Ops': ['Settlement', 'Notice', 'SSI', 'Operational', 'Admin', 'Notification']
                 };
                 const relevantCategories = personaCategories[persona] || [];
-                const filteredItems = items.filter(item => 
+                const filteredItems = items.filter(item =>
                   relevantCategories.some(cat => item.category?.toLowerCase().includes(cat.toLowerCase())) ||
                   relevantCategories.length === 0
                 );
                 const displayItems = filteredItems.length > 0 ? filteredItems : items;
-                
+
                 return displayItems.length === 0 ? (
                   <div className="card-inner py-xl text-center">
                     <span style={{ fontSize: 40, opacity: 0.3 }}>📋</span>
@@ -844,23 +845,23 @@ function TradePackContent() {
                       Showing {displayItems.length} of {items.length} items for {persona} view
                     </div>
                     {displayItems.map((check) => {
-                    const config = getRiskConfig(check.risk_level);
-                    return (
-                      <div key={check.id} className="card-inner hover-glow" style={{ borderLeft: `4px solid var(--accent-${config.color})` }}>
-                        <div className="flex justify-between items-start mb-sm">
-                          <div>
-                            <span className="small opacity-60 uppercase" style={{ fontSize: 10 }}>{check.category}</span>
-                            <div className="h3">{check.item}</div>
+                      const config = getRiskConfig(check.risk_level);
+                      return (
+                        <div key={check.id} className="card-inner hover-glow" style={{ borderLeft: `4px solid var(--accent-${config.color})` }}>
+                          <div className="flex justify-between items-start mb-sm">
+                            <div>
+                              <span className="small opacity-60 uppercase" style={{ fontSize: 10 }}>{check.category}</span>
+                              <div className="h3">{check.item}</div>
+                            </div>
+                            <span className={`tag ${config.color}`}>{config.icon} {config.label}</span>
                           </div>
-                          <span className={`tag ${config.color}`}>{config.icon} {config.label}</span>
+                          <div className="small p-md" style={{ background: 'var(--bg-primary)', borderRadius: 'var(--radius-md)' }}>
+                            <strong>Rationale:</strong> {check.rationale}
+                          </div>
                         </div>
-                        <div className="small p-md" style={{ background: 'var(--bg-primary)', borderRadius: 'var(--radius-md)' }}>
-                          <strong>Rationale:</strong> {check.rationale}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
                 );
               })()}
             </div>
@@ -885,7 +886,7 @@ function TradePackContent() {
                   <div className="card-inner slide-up" style={{ background: 'var(--bg-primary)' }}>
                     <p className="small opacity-70 mb-sm">Cross-referencing against LMA_Assignment_v4.2</p>
                     <div className="small mono opacity-50" style={{ fontSize: 10 }}>
-                      Engine: Llama-3-70B + Legal-BERT<br/>
+                      Engine: Llama-3-70B + Legal-BERT<br />
                       Items: {items.length}
                     </div>
                   </div>

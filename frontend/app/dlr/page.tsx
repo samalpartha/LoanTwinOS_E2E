@@ -442,7 +442,7 @@ function DLRPage() {
               </p>
 
               <div className="flex gap-md justify-center flex-wrap mt-xl">
-                <button className="btn-premium" onClick={onLoadSample} disabled={step === 'creating'}>
+                <button className="btn-premium" onClick={onLoadSample} disabled={step !== 'idle'}>
                   <Zap size={20} /> Try with Sample Deal
                 </button>
               </div>

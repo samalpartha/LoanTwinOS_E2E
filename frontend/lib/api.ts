@@ -1,4 +1,20 @@
-export const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8008";
+export const API_BASE = (function () {
+  // Use environment variable if provided (baked in at build time)
+  if (process.env.NEXT_PUBLIC_API_BASE) return process.env.NEXT_PUBLIC_API_BASE;
+  if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+
+  // Dynamic detection for browser environment
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    // If running on a cloud run domain, use the known backend URL
+    if (hostname.includes('.run.app')) {
+      return "https://loantwin-backend-fozkypxpga-uc.a.run.app";
+    }
+  }
+
+  // Default for local development
+  return "http://localhost:8008";
+})();
 
 async function handle(res: Response) {
   if (!res.ok) {

@@ -11,6 +11,24 @@ LoanTwin OS turns long-form loan agreements (PDF) into:
 
 ---
 
+## 🌐 Live Demo (Google Cloud Run)
+
+**🚀 Production Deployment**
+
+- **Frontend Application**: [https://loantwin-frontend-fozkypxpga-uc.a.run.app](https://loantwin-frontend-fozkypxpga-uc.a.run.app)
+- **Backend API**: [https://loantwin-backend-fozkypxpga-uc.a.run.app](https://loantwin-backend-fozkypxpga-uc.a.run.app)
+- **API Documentation (Swagger)**: [https://loantwin-backend-fozkypxpga-uc.a.run.app/docs](https://loantwin-backend-fozkypxpga-uc.a.run.app/docs)
+- **Health Check**: [https://loantwin-backend-fozkypxpga-uc.a.run.app/api/health](https://loantwin-backend-fozkypxpga-uc.a.run.app/api/health)
+
+**Deployment Details:**
+- Platform: Google Cloud Run
+- Region: us-central1
+- Backend Memory: 1Gi (optimized for AI document processing)
+- Auto-scaling enabled
+- HTTPS with Google-managed certificates
+
+---
+
 ## 🏗️ System Architecture
 
 ### Complete End-to-End Flow
@@ -508,5 +526,9 @@ This project is part of a hackathon submission and is provided as-is for demonst
 ## 🔗 Links
 
 - **Repository**: https://github.com/samalpartha/LoanTwinOS_E2E
-- **Live Demo**: http://localhost:3005 (after running locally)
-- **API Documentation**: http://localhost:8005/docs
+- **Live Frontend**: https://loantwin-frontend-fozkypxpga-uc.a.run.app
+- **Live API**: https://loantwin-backend-fozkypxpga-uc.a.run.app
+- **API Documentation**: https://loantwin-backend-fozkypxpga-uc.a.run.app/docs
+- **Local Frontend** (after docker compose up): http://localhost:3005
+- **Local API** (after docker compose up): http://localhost:8005
+

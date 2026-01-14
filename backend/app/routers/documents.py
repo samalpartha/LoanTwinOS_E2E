@@ -8,7 +8,7 @@ from ..models.tables import Document, Loan
 from ..models.schemas import DocumentOut
 
 router = APIRouter(tags=["documents"])
-UPLOAD_DIR = "./data/uploads"
+UPLOAD_DIR = "/tmp/uploads" if os.getenv("K_SERVICE") else "./data/uploads"
 
 @router.post("/loans/{loan_id}/documents", response_model=DocumentOut)
 def upload_document(loan_id: int, file: UploadFile = File(...)):

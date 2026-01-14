@@ -1,4 +1,4 @@
-# LoanTwin OS (Complete E2E)
+# LoanTwin OS
 
 > **AI-Powered Loan Document Intelligence Platform**  
 > Transform complex loan agreements into actionable digital insights

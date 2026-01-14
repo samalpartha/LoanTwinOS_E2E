@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" fill="none">
+  <defs>
+    <!-- Ellipse gradients -->
+    <linearGradient id="ellipse1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00F5D4"/>
+      <stop offset="100%" style="stop-color:#00D4AA"/>
+    </linearGradient>
+    <linearGradient id="ellipse2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00BBF9"/>
+      <stop offset="100%" style="stop-color:#0099DD"/>
+    </linearGradient>
+    <linearGradient id="ellipse3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0066CC"/>
+      <stop offset="100%" style="stop-color:#003D7A"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Three overlapping ellipses - Codium style -->
+  <ellipse cx="38" cy="30" rx="16" ry="22" fill="url(#ellipse3)"/>
+  <ellipse cx="28" cy="30" rx="16" ry="22" fill="url(#ellipse2)" fill-opacity="0.9"/>
+  <ellipse cx="18" cy="30" rx="16" ry="22" fill="url(#ellipse1)" fill-opacity="0.85"/>
+  
+  <!-- LoanTwin text -->
+  <text x="62" y="40" font-family="'SF Pro Display', 'Inter', -apple-system, sans-serif" font-size="28" font-weight="700" fill="#00F5D4" letter-spacing="-0.5">
+    LoanTwin
+  </text>
+  
+  <!-- OS superscript -->
+  <text x="195" y="26" font-family="'SF Pro Display', 'Inter', -apple-system, sans-serif" font-size="14" font-weight="600" fill="#00BBF9">
+    OS
+  </text>
+</svg>

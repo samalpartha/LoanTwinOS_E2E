@@ -1,0 +1,1 @@
+{"accuracy": 99.43, "cv_accuracy_mean": 98.37, "cv_accuracy_std": 1.47, "precision": 97.16, "recall": 100.0, "f1_score": 98.56, "auc_roc": 0.9997, "samples": 1045, "default_rate": 19.62, "trained_at": "2026-01-14T01:53:26.094155"}

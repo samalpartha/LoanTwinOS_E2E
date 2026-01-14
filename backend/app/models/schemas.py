@@ -30,6 +30,7 @@ class DocumentOut(BaseModel):
     status: str
     error: Optional[str] = None
     loan_id: Optional[int] = None
+    extraction_method: str
 
 class LoanCreate(BaseModel):
     name: str
@@ -43,12 +44,25 @@ class LoanOut(BaseModel):
     closing_date: Optional[date] = None
     governing_law: Optional[str] = None
     creator_id: Optional[int] = None
+    # Canonical Fields
+    borrower_name: Optional[str] = None
+    facility_type: Optional[str] = None
+    margin_bps: Optional[int] = None
+    currency: Optional[str] = None
+    is_esg_linked: bool = False
+    esg_score: Optional[float] = None
+    transferability_mode: Optional[str] = None
+    version: int = 1
 
 class DLR(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     loan_id: int
     agreement_date: Optional[str] = None
     governing_law: Optional[str] = None
+    borrower_name: Optional[str] = None
+    facility_type: Optional[str] = None
+    margin_bps: Optional[int] = None
+    currency: Optional[str] = None
     parties: List[dict] = []
     facilities: List[dict] = []
     transferability: dict = {}
@@ -66,6 +80,8 @@ class ClauseOut(BaseModel):
     page_start: int
     page_end: int
     source_doc_id: Optional[int] = None
+    variance_score: float = 0.0
+    is_standard: bool = True
 
 class ObligationOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -77,6 +93,9 @@ class ObligationOut(BaseModel):
     due_date: Optional[date] = None
     status: str
     evidence_path: Optional[str] = None
+    assigned_to: Optional[str] = None
+    is_esg: bool = False
+    confidence: float = 0.95
 
 class TradeCheckOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
